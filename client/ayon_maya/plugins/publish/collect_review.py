@@ -37,6 +37,7 @@ class CollectReview(plugin.MayaInstancePlugin):
         # 1 start MNM collect
         # Collect shadow
         shadows = instance.data.get("shadows", 0)
+        # 1 end MNM collect
 
         # Collect camera focal length.
         burninDataMembers = instance.data.get("burninDataMembers", {})
@@ -100,13 +101,12 @@ class CollectReview(plugin.MayaInstancePlugin):
             data["isolate"] = instance.data["isolate"]
             data["panZoom"] = instance.data.get("panZoom", False)
             data["panel"] = instance.data["panel"]
-            data["displayLights"] = display_lights            
+            data["displayLights"] = display_lights
             # 2 start MNM
-            # data["renderDepthOfField"] = depth_of_field
             data["shadows"] = shadows
-            # data["motionBlurEnable"] = motion_blur
             # 2 end MNM
             data["burninDataMembers"] = burninDataMembers
+
             for key, value in instance.data["publish_attributes"].items():
                 data["publish_attributes"][key] = value
 
