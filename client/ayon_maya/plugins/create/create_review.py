@@ -94,7 +94,7 @@ class CreateReview(plugin.MayaCreator):
 
     def get_instance_attr_defs(self):
 
-        defs = lib.collect_animation_defs()
+        defs = lib.collect_animation_defs(create_context=self.create_context)
 
         # Option for using Maya or folder frame range in settings.
         if not self.useMayaTimeline:
@@ -143,17 +143,6 @@ class CreateReview(plugin.MayaCreator):
             EnumDef("displayLights",
                     label="Display Lights",
                     items=lib.DISPLAY_LIGHTS_ENUM),
-            # 1 start MNM options
-            EnumDef("renderDepthOfField",
-                    label="Depth of Field",
-                    items=lib.ON_OFF_ENUM),
-            EnumDef("shadows",
-                    label="Shadows",
-                    items=lib.ON_OFF_ENUM),
-            EnumDef("motionBlurEnable",
-                    label="Enable Motion Blur",
-                    items=lib.ON_OFF_ENUM),
-            # 1 end MNM options 
         ])
 
         return defs

@@ -34,10 +34,6 @@ class CollectReview(plugin.MayaInstancePlugin):
         # Collect display lights.
         display_lights = instance.data.get("displayLights", "default")
 
-        # 1 start MNM collect
-        # Collect shadow
-        shadows = instance.data.get("shadows", 0)
-
         # Collect camera focal length.
         burninDataMembers = instance.data.get("burninDataMembers", {})
         if camera is not None:
@@ -100,13 +96,9 @@ class CollectReview(plugin.MayaInstancePlugin):
             data["isolate"] = instance.data["isolate"]
             data["panZoom"] = instance.data.get("panZoom", False)
             data["panel"] = instance.data["panel"]
-            data["displayLights"] = display_lights            
-            # 2 start MNM
-            # data["renderDepthOfField"] = depth_of_field
-            data["shadows"] = shadows
-            # data["motionBlurEnable"] = motion_blur
-            # 2 end MNM
+            data["displayLights"] = display_lights
             data["burninDataMembers"] = burninDataMembers
+
             for key, value in instance.data["publish_attributes"].items():
                 data["publish_attributes"][key] = value
 
@@ -134,9 +126,6 @@ class CollectReview(plugin.MayaInstancePlugin):
             instance.data['frameEndFtrack'] = \
                 instance.data["frameEndHandle"]
             instance.data["displayLights"] = display_lights
-            # 3 start MNM
-            instance.data["shadows"] = shadows
-            # 3 end MNM
             instance.data["burninDataMembers"] = burninDataMembers
             # this (with other time related data) should be set on
             # representations. Once plugins like Extract Review start
