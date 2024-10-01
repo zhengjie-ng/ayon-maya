@@ -300,6 +300,7 @@ def generate_capture_preset(instance, camera, path,
     # When using 'project settings' we preserve the capture preset that
     # was picked, then we do not override it with the instance data
     if instance.data["displayLights"] != "project_settings":
+        viewport_options["displayLights"] = instance.data["displayLights"]
         
     # 2 start MNM
     if instance.data["renderDepthOfField"] != "project_settings":
