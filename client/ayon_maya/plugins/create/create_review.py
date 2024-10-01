@@ -143,6 +143,17 @@ class CreateReview(plugin.MayaCreator):
             EnumDef("displayLights",
                     label="Display Lights",
                     items=lib.DISPLAY_LIGHTS_ENUM),
+            # 1 start MNM options
+            EnumDef("renderDepthOfField",
+                    label="Depth of Field",
+                    items=lib.ON_OFF_ENUM),
+            EnumDef("shadows",
+                    label="Shadows",
+                    items=lib.ON_OFF_ENUM),
+            EnumDef("motionBlurEnable",
+                    label="Enable Motion Blur",
+                    items=lib.ON_OFF_ENUM),
+            # 1 end MNM option
         ])
 
         return defs

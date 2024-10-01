@@ -84,6 +84,13 @@ DISPLAY_LIGHTS_ENUM = [
     {"label": "No Lights", "value": "none"}
 ]
 
+# 1 start MNM enum
+ON_OFF_ENUM = [
+    {"label": "Use Project Settings", "value": "project_settings"},
+    {"label": "On", "value": 1},
+    {"label": "Off", "value": 0}
+]
+# 1 end MNM enum
 
 def get_main_window():
     """Acquire Maya's main window"""
@@ -293,8 +300,18 @@ def generate_capture_preset(instance, camera, path,
     # When using 'project settings' we preserve the capture preset that
     # was picked, then we do not override it with the instance data
     if instance.data["displayLights"] != "project_settings":
-        viewport_options["displayLights"] = instance.data["displayLights"]
+        
+    # 2 start MNM
+    if instance.data["renderDepthOfField"] != "project_settings":
+        preset["viewport2_options"]["renderDepthOfField"] = instance.data["renderDepthOfField"]
 
+    if instance.data["shadows"] != "project_settings":
+        viewport_options["shadows"] = instance.data["shadows"]
+
+    if instance.data["motionBlurEnable"] != "project_settings":
+        preset["viewport2_options"]["motionBlurEnable"] = instance.data["motionBlurEnable"]
+    # 2 end MNM    
+    
     # Override transparency if requested.
     transparency = instance.data.get("transparency", 0)
     if transparency != 0:
