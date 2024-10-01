@@ -102,11 +102,11 @@ class CollectReview(plugin.MayaInstancePlugin):
             data["panZoom"] = instance.data.get("panZoom", False)
             data["panel"] = instance.data["panel"]
             data["displayLights"] = display_lights
+
+            data["burninDataMembers"] = burninDataMembers
             # 2 start MNM
             data["shadows"] = shadows
             # 2 end MNM
-            data["burninDataMembers"] = burninDataMembers
-
             for key, value in instance.data["publish_attributes"].items():
                 data["publish_attributes"][key] = value
 
