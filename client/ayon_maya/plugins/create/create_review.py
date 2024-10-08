@@ -154,6 +154,7 @@ class CreateReview(plugin.MayaCreator):
                     label="Enable Motion Blur",
                     items=lib.ON_OFF_ENUM),
             # 1 end MNM option
+
         ])
 
         return defs
