@@ -196,7 +196,40 @@ class RenderSettings(object):
             rs_layername = "rsAov_{}".format(rs_aov.replace(" ", ""))
             if rs_layername in all_rs_aovs:
                 continue
-            cmds.rsCreateAov(type=rs_aov)
+
+            if rs_aov == "AO":
+                cmds.rsCreateAov(type='Custom', name='AO')
+                cmds.setAttr('AO.name', 'AO', type='string')
+                rs_ao_node = cmds.shadingNode("RedshiftAmbientOcclusion", asUtility=True)
+                cmds.setAttr(rs_ao_node+'.numSamples', 1024)
+                cmds.setAttr(rs_ao_node+'.fallOff', 16)
+                cmds.setAttr(rs_ao_node+'.maxDistance', 20)
+                cmds.connectAttr(rs_ao_node+'.outColor', 'AO.defaultShader', force=True)
+            
+            elif rs_aov == "UV":
+                cmds.rsCreateAov(type='Custom', name='UV')
+                cmds.setAttr('UV.name', 'UV', type='string')
+                rs_state_node = cmds.shadingNode("RedshiftState", asUtility=True)
+                cmds.connectAttr(rs_state_node+'.outUVCoord.outUVCoord0', 'UV.defaultShader.defaultShaderR', force=True)
+                cmds.connectAttr(rs_state_node+'.outUVCoord.outUVCoord1', 'UV.defaultShader.defaultShaderG', force=True)
+
+            elif rs_aov == "Cryptomatte_id":
+                cmds.rsCreateAov(type='Cryptomatte', name='Cryptomatte_id')
+                cmds.setAttr('Cryptomatte_id.name', 'Cryptomatte_id', type='string')
+                cmds.setAttr('Cryptomatte_id.idType', 2)
+
+            elif rs_aov == "Cryptomatte_node":
+                cmds.rsCreateAov(type='Cryptomatte', name='Cryptomatte_node')
+                cmds.setAttr( 'Cryptomatte_node.name', 'Cryptomatte_node', type='string')
+
+            elif rs_aov == "Cryptomatte_mat":
+                cmds.rsCreateAov(type='Cryptomatte', name='Cryptomatte_mat')
+                cmds.setAttr('Cryptomatte_mat.name', 'Cryptomatte_mat', type='string')
+                cmds.setAttr('Cryptomatte_mat.idType', 1)
+
+            else:
+                cmds.rsCreateAov(type=rs_aov)
+                
         # update the AOV list
         mel.eval("redshiftUpdateActiveAovList")
 
