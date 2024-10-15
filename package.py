@@ -1,6 +1,6 @@
 name = "maya"
 title = "Maya"
-version = "0.2.15-mnm.5"
+version = "0.2.15-mnm.6"
 client_dir = "ayon_maya"
 
 ayon_required_addons = {
