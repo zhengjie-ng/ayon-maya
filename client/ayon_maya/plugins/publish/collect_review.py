@@ -103,6 +103,7 @@ class CollectReview(plugin.MayaInstancePlugin):
             data["panel"] = instance.data["panel"]
             data["displayLights"] = display_lights
             data["burninDataMembers"] = burninDataMembers
+
             # 2 start MNM
             data["shadows"] = shadows
             # 2 end MNM
@@ -143,9 +144,6 @@ class CollectReview(plugin.MayaInstancePlugin):
             # using representations, this should be removed from here
             # as Extract Playblast is already adding fps to representation.
             instance.data["fps"] = instance.context.data["fps"]
-
-            # make ftrack publishable
-            instance.data.setdefault("families", []).append('ftrack')
 
             # Collect audio
             playback_slider = mel.eval('$tmpVar=$gPlayBackSlider')

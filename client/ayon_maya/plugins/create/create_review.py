@@ -143,7 +143,7 @@ class CreateReview(plugin.MayaCreator):
             EnumDef("displayLights",
                     label="Display Lights",
                     items=lib.DISPLAY_LIGHTS_ENUM),
-
+                    
             # 1 start MNM options
             EnumDef("renderDepthOfField",
                     label="Depth of Field",

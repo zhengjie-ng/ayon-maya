@@ -285,6 +285,7 @@ def redshift_aov_list_enum():
         {"value": "World Position", "label": "World Position"},
     ]
 
+
 class AdditionalOptionsModel(BaseSettingsModel):
     """Additional Option"""
     _layout = "compact"

@@ -11,7 +11,6 @@ import logging
 import contextlib
 import capture
 import clique
-from .exitstack import ExitStack
 from collections import OrderedDict, defaultdict
 from math import ceil
 from six import string_types
@@ -90,6 +89,15 @@ ON_OFF_ENUM = [
     {"label": "Off", "value": 0}
 ]
 # 1 end MNM enum
+
+class RigSetsNotExistError(RuntimeError):
+    """Raised when required rig sets for animation instance are missing.
+
+    This is raised from `create_rig_animation_instance` when the required
+    `out_SET` or `controls_SET` are missing.
+    """
+    pass
+
 
 def get_main_window():
     """Acquire Maya's main window"""
@@ -202,7 +210,7 @@ def render_capture_preset(preset):
     # not supported by `capture` so we pop it off of the preset
     reload_textures = preset["viewport_options"].pop("loadTextures", False)
     panel = preset.pop("panel")
-    with ExitStack() as stack:
+    with contextlib.ExitStack() as stack:
         stack.enter_context(maintained_time())
         stack.enter_context(panel_camera(panel, preset["camera"]))
         stack.enter_context(viewport_default_options(panel, preset))
@@ -300,7 +308,7 @@ def generate_capture_preset(instance, camera, path,
     # was picked, then we do not override it with the instance data
     if instance.data["displayLights"] != "project_settings":
         viewport_options["displayLights"] = instance.data["displayLights"]
-
+    
     # 2 start MNM
     if instance.data["renderDepthOfField"] != "project_settings":
         preset["viewport2_options"]["renderDepthOfField"] = instance.data["renderDepthOfField"]
@@ -310,7 +318,7 @@ def generate_capture_preset(instance, camera, path,
 
     if instance.data["motionBlurEnable"] != "project_settings":
         preset["viewport2_options"]["motionBlurEnable"] = instance.data["motionBlurEnable"]
-    # 2 end MNM  
+    # 2 end MNM 
 
     # Override transparency if requested.
     transparency = instance.data.get("transparency", 0)
@@ -2938,7 +2946,7 @@ def bake_to_world_space(nodes,
                        "sx", "sy", "sz"}
 
     world_space_nodes = []
-    with ExitStack() as stack:
+    with contextlib.ExitStack() as stack:
         delete_bin = stack.enter_context(delete_after())
         # Create the duplicate nodes that are in world-space connected to
         # the originals
@@ -4187,8 +4195,14 @@ def create_rig_animation_instance(
     controls = next((node for node in nodes if
                      node.endswith("controls_SET")), None)
     if name != "fbx":
-        assert output, "No out_SET in rig, this is a bug."
-        assert controls, "No controls_SET in rig, this is a bug."
+        if not output:
+            raise RigSetsNotExistError(
+                "No out_SET in rig. The loaded rig publish is lacking the "
+                "out_SET required for animation instances.")
+        if not controls:
+            raise RigSetsNotExistError(
+                "No controls_SET in rig. The loaded rig publish is lacking "
+                "the controls_SET required for animation instances.")
 
     anim_skeleton = next((node for node in nodes if
                           node.endswith("skeletonAnim_SET")), None)

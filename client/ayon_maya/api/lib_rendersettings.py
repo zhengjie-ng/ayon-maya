@@ -270,6 +270,7 @@ class RenderSettings(object):
             else:
                 cmds.rsCreateAov(type=rs_aov)
             #1 end MNM
+            cmds.rsCreateAov(type=rs_aov)
         # update the AOV list
         mel.eval("redshiftUpdateActiveAovList")
 
