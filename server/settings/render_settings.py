@@ -229,13 +229,6 @@ def redshift_aov_list_enum():
     *Tested in Redshift 3.6.03
     """
     return [
-        # 1 start MNM
-        {"value": "AO", "label": "AO"},
-        {"value": "UV", "label": "UV"},
-        {"value": "Cryptomatte_id", "label": "Cryptomatte_id"},
-        {"value": "Cryptomatte_mat", "label": "Cryptomatte_mat"},
-        {"value": "Cryptomatte_node", "label": "Cryptomatte_node"},
-        # 1 end MNM
         {"value": "Ambient Occlusion", "label": "Ambient Occlusion"},
         {"value": "Background", "label": "Background"},
         {"value": "Beauty", "label": "Beauty"},
@@ -284,6 +277,7 @@ def redshift_aov_list_enum():
         {"value": "Volume Lighting", "label": "Volume Lighting"},
         {"value": "World Position", "label": "World Position"},
     ]
+
 
 class AdditionalOptionsModel(BaseSettingsModel):
     """Additional Option"""

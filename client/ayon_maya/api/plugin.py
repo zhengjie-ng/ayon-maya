@@ -1,10 +1,8 @@
 import json
 import os
-from abc import ABCMeta
 
 import ayon_api
 import qargparse
-import six
 
 from ayon_core.lib import BoolDef, Logger
 from ayon_core.pipeline import (
@@ -110,9 +108,7 @@ def get_ayon_entity_uri_from_representation_context(context: dict) -> str:
     return uris[0]["uri"]
 
 
-@six.add_metaclass(ABCMeta)
-class MayaCreatorBase(object):
-
+class MayaCreatorBase:
     @staticmethod
     def cache_instance_data(shared_data):
         """Cache instances for Creators to shared data.
@@ -297,7 +293,6 @@ class MayaCreatorBase(object):
             self._remove_instance_from_context(instance)
 
 
-@six.add_metaclass(ABCMeta)
 class MayaCreator(Creator, MayaCreatorBase):
 
     settings_category = "maya"
@@ -416,7 +411,7 @@ class RenderlayerCreator(Creator, MayaCreatorBase):
     an instance per renderlayer.
 
     """
-
+    settings_category = "maya"
     # These are required to be overridden in subclass
     singleton_node_name = ""
 
@@ -1055,19 +1050,14 @@ class ReferenceLoader(Loader):
     def _organize_containers(nodes, container):
         # type: (list, str) -> None
         """Put containers in loaded data to correct hierarchy."""
-        # 1 MNM start
-        try:
-            for node in nodes:
-                id_attr = "{}.id".format(node)
-                if not cmds.attributeQuery("id", node=node, exists=True):
-                    continue
-                if cmds.getAttr(id_attr) not in {
-                    AYON_CONTAINER_ID, AVALON_CONTAINER_ID
-                }:
-                    cmds.sets(node, forceElement=container)
-        except Exception as error:
-            print(error)
-        # 1 MNM end
+        for node in nodes:
+            id_attr = "{}.id".format(node)
+            if not cmds.attributeQuery("id", node=node, exists=True):
+                continue
+            if cmds.getAttr(id_attr) not in {
+                AYON_CONTAINER_ID, AVALON_CONTAINER_ID
+            }:
+                cmds.sets(node, forceElement=container)
 
     @classmethod
     def get_representation_name_aliases(cls, representation_name):
