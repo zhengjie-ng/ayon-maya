@@ -308,7 +308,7 @@ def generate_capture_preset(instance, camera, path,
     # was picked, then we do not override it with the instance data
     if instance.data["displayLights"] != "project_settings":
         viewport_options["displayLights"] = instance.data["displayLights"]
-    
+
     # 2 start MNM
     if instance.data["renderDepthOfField"] != "project_settings":
         preset["viewport2_options"]["renderDepthOfField"] = instance.data["renderDepthOfField"]

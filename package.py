@@ -1,6 +1,6 @@
 name = "maya"
 title = "Maya"
-version = "0.4.2-mnm.1"
+version = "0.4.3-mnm.1"
 app_host_name = "maya"
 client_dir = "ayon_maya"
 
