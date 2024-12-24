@@ -946,9 +946,11 @@ class ReferenceLoader(Loader):
             cmds.sets(invalid, remove=node)
 
         # Update metadata
-        cmds.setAttr("{}.representation".format(node),
-                     repre_entity["id"],
-                     type="string")
+        for attr_name, value in [
+            ("representation", repre_entity["id"]),
+            ("project_name", context["project"]["name"]),
+        ]:
+            lib.set_attribute(node=node, attribute=attr_name, value=value)
 
         # When an animation or pointcache gets connected to an Xgen container,
         # the compound attribute "xgenContainers" gets created. When animation
@@ -1050,19 +1052,14 @@ class ReferenceLoader(Loader):
     def _organize_containers(nodes, container):
         # type: (list, str) -> None
         """Put containers in loaded data to correct hierarchy."""
-        # 1 MNM start
-        try:
-            for node in nodes:
-                id_attr = "{}.id".format(node)
-                if not cmds.attributeQuery("id", node=node, exists=True):
-                    continue
-                if cmds.getAttr(id_attr) not in {
-                    AYON_CONTAINER_ID, AVALON_CONTAINER_ID
-                }:
-                    cmds.sets(node, forceElement=container)
-        except Exception as error:
-            print(error)
-        # 1 MNM end
+        for node in nodes:
+            id_attr = "{}.id".format(node)
+            if not cmds.attributeQuery("id", node=node, exists=True):
+                continue
+            if cmds.getAttr(id_attr) not in {
+                AYON_CONTAINER_ID, AVALON_CONTAINER_ID
+            }:
+                cmds.sets(node, forceElement=container)
 
     @classmethod
     def get_representation_name_aliases(cls, representation_name):
