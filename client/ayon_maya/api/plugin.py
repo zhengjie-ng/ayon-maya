@@ -1052,14 +1052,19 @@ class ReferenceLoader(Loader):
     def _organize_containers(nodes, container):
         # type: (list, str) -> None
         """Put containers in loaded data to correct hierarchy."""
-        for node in nodes:
-            id_attr = "{}.id".format(node)
-            if not cmds.attributeQuery("id", node=node, exists=True):
-                continue
-            if cmds.getAttr(id_attr) not in {
-                AYON_CONTAINER_ID, AVALON_CONTAINER_ID
-            }:
-                cmds.sets(node, forceElement=container)
+        # 1 MNM start
+        try:
+            for node in nodes:
+                id_attr = "{}.id".format(node)
+                if not cmds.attributeQuery("id", node=node, exists=True):
+                    continue
+                if cmds.getAttr(id_attr) not in {
+                    AYON_CONTAINER_ID, AVALON_CONTAINER_ID
+                }:
+                    cmds.sets(node, forceElement=container)
+        except Exception as error:
+            print(error)
+        # 1 MNM end
 
     @classmethod
     def get_representation_name_aliases(cls, representation_name):
